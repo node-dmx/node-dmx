@@ -4,7 +4,9 @@ DMX-512 controller library for node.js
 
 ## Install
 
-    npm install dmx
+```bash
+npm install dmx
+```
 
 ## Library API
 ```javascript
@@ -17,33 +19,36 @@ const DMX = require('dmx')
 
 Create a new DMX instance. This class is used to tie multiple universes together.
 
-#### dmx.registerDriver(name, module)
+#### dmx.addUniverse(name, driver)
 
 - <code>name</code> - String
-- <code>module</code> - Object implementing the Driver API
+- <code>driver</code> - Instance of a Driver class, see below
 
+Add a new DMX Universe with a name and driver.
 
-Register a new DMX Driver module by its name.
-These drivers are currently registered by default:
+The following Drivers are available:
 
-- null: a development driver that prints the universe to stdout
-- socketio: a driver which sends out the universe via socket.IO as an array (see [demo_socket_client.js](./demo_socket_client.js) as a client example)
-- artnet: driver for EnttecODE
-- bbdmx: driver for [BeagleBone-DMX](https://github.com/boxysean/beaglebone-DMX)
-- dmx4all: driver for DMX4ALL devices like the "NanoDMX USB Interface"
-- enttec-usb-dmx-pro: a driver for devices using a Enttec USB DMX Pro chip like the "DMXKing ultraDMX Micro".
-- enttec-open-usb-dmx: driver for "Enttec Open DMX USB". This device is NOT recommended, there are known hardware limitations and this driver is not very stable. (If possible better obtain a device with the "pro" chip)
-- dmxking-utra-dmx-pro: driver for the DMXKing Ultra DMX pro interface. This driver support multiple universe specify the options with Port = A or B
+**Development Drivers:**
+- `NullDriver()`: a development driver that prints the universe to stdout
 
-#### dmx.addUniverse(name, driver, device_id, options)
+**Network Drivers:**
+- `SocketIODriver()`: a driver which sends out the universe via socket.IO as an array (see [demo_socket_client.js](src/demo/demo_socket_client.js) as a client example)
+- `ArtnetDriver()`: driver for Artnet
+- `SACNDriver()`: driver for sACN
+- `BBDMXDriver()`: driver for [BeagleBone-DMX](https://github.com/boxysean/beaglebone-DMX)
 
-- <code>name</code> - String
-- <code>driver</code> - String, referring a registered driver
-- <code>device_id</code> - Number or Object
-- <code>options</code> - Object, driver specific options
+**Serial Drivers (USB):**
+- `DMX4AllDriver()`: driver for DMX4ALL devices like the "NanoDMX USB Interface"
+- `EnttecUSBDMXProDriver()`: a driver for devices using a Enttec USB DMX Pro chip like the "DMXKing ultraDMX Micro".
+- `EnttecOpenUSBDMXDriver()`: driver for "Enttec Open DMX USB". This device is NOT recommended, there are known hardware limitations and this driver is not very stable. (If possible better obtain a device with the "pro" chip)
+- `DMXKingUltraDMXProDriver()`: driver for the DMXKing Ultra DMX pro interface. This driver support multiple universe specify the options with Port = A or B
 
-Add a new DMX Universe with a name, driver and an optional device_id used by the driver to identify the device.
-For enttec-usb-dmx-pro and enttec-open-usb-dmx device_id is the path the the serial device. For artnet it is the target ip.
+Each driver has its own options. Example:
+```TypeScript
+const universe1 = dmx.addUniverse('demo1', new NullDriver());
+const universe2 = dmx.addUniverse('demo2', new ArtnetDriver("127.0.0.1"));
+const universe2 = dmx.addUniverse('demo3', new EnttecUSBDMXProDriver("COM5", { dmxSpeed: 40 }));
+```
 
 #### dmx.update(universe, channels[, extraData])
 
@@ -66,9 +71,9 @@ The following Devices are known:
 - eurolite-led-bar - Led bar with 3 RGB color segments and some programms
 - stairville-led-par-56 - RGB LED Par Can with some programms
 
-### Class DMX.Animation
+### Class Animation
 
-#### new DMX.Animation([options])
+#### new Animation([options])
 
 Create a new DMX Animation instance. This can be chained similar to jQuery.
 
@@ -147,7 +152,7 @@ Runs an animation constantly until <code>animation.stop()</code> is called
 
 The example below shows a value being animated for 5 seconds:
 ```javascript
-const animation = new DMX.Animation().add({
+const animation = new Animation().add({
   1: 255,
 }, 100).add({
   1: 0,

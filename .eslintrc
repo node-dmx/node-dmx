@@ -19,11 +19,14 @@
     "sinon": true
   },
 
-  "parser": "babel-eslint",
-
+  "parser": "@typescript-eslint/parser",
   "plugins": [
-    
+    "@typescript-eslint"
   ],
+
+  "parserOptions": {
+    "sourceType": "module"
+  },
 
   "rules": {
     "block-scoped-var": 2,

@@ -1,3 +1,4 @@
+dist
 lib-cov
 *.seed
 *.log
@@ -17,7 +18,10 @@ node_modules
 .com.greenworldsoft.syncfolderspro
 
 # Remove some common IDE working directories
-.idea
+.idea/*.xml
+.idea/*.iml
+.idea/inspectionProfiles
 .vscode
 
 .DS_Store
+coverage
