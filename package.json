@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "sacn": "^3.2.1",
-    "serialport": "^8.0.5",
+    "serialport": "^9.0.8",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
